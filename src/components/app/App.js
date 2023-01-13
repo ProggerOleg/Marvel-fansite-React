@@ -1,44 +1,29 @@
-import {Component} from 'react'
+import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
+
+import {MainPage, ComicsPage} from '../pages';
 import AppHeader from "../appHeader/AppHeader";
-import RandomChar from "../randomChar/RandomChar";
-import CharList from "../charList/CharList";
-import CharInfo from "../charInfo/CharInfo";
-import ErrorBoundery from '../errorBoundery/ErrorBoundery';
 
-import decoration from '../../resources/img/vision.png';
-class App extends Component{
+const App = () => {
 
-    state = {
-        selectedChar: null
-    }
-
-    onCharSelected = (id) => {
-        this.setState({
-            selectedChar:id
-        })
-    }
-
-    render() {
-        return (
+    return (
+        <Router>
             <div className="app">
                 <AppHeader/>
                 <main>
-                <ErrorBoundery>
-                <RandomChar/>
-                </ErrorBoundery>
-                    <div className="char__content">
-                        <ErrorBoundery>
-                            <CharList onCharSelected={this.onCharSelected}/>
-                        </ErrorBoundery>
-                        <ErrorBoundery>
-                            <CharInfo charId={this.state.selectedChar}/>
-                        </ErrorBoundery>
-                    </div>
-                    <img className="bg-decoration" src={decoration} alt="vision"/>
+                    <Switch>
+                        <Route path='/comics'>
+                            <ComicsPage/>
+                        </Route>
+
+                        <Route path='/'>
+                            <MainPage/>
+                        </Route>
+                    </Switch>
                 </main>
             </div>
-        )
-    }
+        </Router>
+        
+    )
 }
 
 export default App;

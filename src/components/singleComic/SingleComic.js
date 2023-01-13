@@ -1,7 +1,21 @@
 import './singleComic.scss';
+import { useEffect, useState } from 'react';
 import xMen from '../../resources/img/x-men.png';
+import useMarvelService from '../../services/MarvelService';
 
-const SingleComic = () => {
+const SingleComic = (props) => {
+    const {loading, error, getComics} = useMarvelService();
+    const [id, setId] = useState(props.id)
+
+    useEffect(()=>{
+        getComics(id)
+            .then(onComicsLoaded);
+    },[])
+
+    const onComicsLoaded = () => {
+        setId(props.id)
+    }
+
     return (
         <div className="single-comic">
             <img src={xMen} alt="x-men" className="single-comic__img"/>
