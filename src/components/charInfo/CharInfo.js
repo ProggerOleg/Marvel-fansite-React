@@ -1,4 +1,6 @@
 import {Fragment, useState, useEffect} from 'react'
+import { Link } from 'react-router-dom';
+
 import PropTypes from 'prop-types';
 import useMarvelService from '../../services/MarvelService';
 import Spinner from '../spinner/spinner';
@@ -11,7 +13,7 @@ const CharInfo = (props) => {
 
     const [char, setChar] = useState(null);
 
-    const {loading, error, getCharacter}= useMarvelService();
+    const {loading, error, getCharacter, clearError}= useMarvelService();
 
     useEffect(() => {
         updateChar()
@@ -27,7 +29,7 @@ const CharInfo = (props) => {
             return;
         }
 
-
+        clearError();
         getCharacter(charId)
             .then(onCharLoaded);
     }
@@ -87,7 +89,9 @@ const View = ({char}) => {
                         if (i > 9) return;
                         return (
                             <li key={i} className="char__comics-item">
-                                {item.name}
+                                <Link to={`/comics/${item.resourceURI.split('/')[6]}`}>
+                                    {item.name}
+                                </Link>
                             </li>
                         )
                     })
