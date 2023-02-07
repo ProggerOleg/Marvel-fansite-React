@@ -2,7 +2,6 @@ import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 
 import {Page404, MainPage, ComicsPage, SingleComicPage, SingleCharPage} from '../pages/index';
 import AppHeader from "../appHeader/AppHeader";
-import Spinner from '../spinner/spinner';
 
 const App = () => {
 

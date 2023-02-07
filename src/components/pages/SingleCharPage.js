@@ -1,52 +1,45 @@
-import { Link } from "react-router-dom";
+import { useParams} from 'react-router-dom';
 import { Helmet } from "react-helmet";
 
 import useMarvelService from '../../services/MarvelService';
-import Spinner from '../spinner/spinner';
-import ErrorMessage from '../errorMessage/errorMessage';
 import AppBanner from "../appBanner/AppBanner";
+import setContent from "../../utils/setContent";
 
-import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 
-import './SingleCharPage.scss';
+import './SingleCharPage.scss'; 
 
 const SingleCharPage = () => {
     const {characterId} = useParams();
     const [char, setChar] = useState(null);
-    const {loading, error, getCharacter, clearError} = useMarvelService();
+    const {getCharacter, clearError, process, setProcess} = useMarvelService();
 
     useEffect(() => {
         updateChar()
+        // eslint-disable-next-line
     }, [characterId])
 
     const updateChar = () => {
         clearError();
         getCharacter(characterId)
-            .then(onCharLoaded);
+            .then(onCharLoaded)
+            .then(()=>setProcess('confirmed'));
     }
 
     const onCharLoaded = (char) => {
         setChar(char);
     }
 
-    const errorMessage = error ? <ErrorMessage/> : null;
-    const spinner = loading ? <Spinner/> : null;
-    const content = !(loading || error || !char) ? <View char={char}/> : null;
-    
-
     return (
         <>
             <AppBanner/>
-            {errorMessage}
-            {spinner}
-            {content}
+            {setContent(process, View, char)}
         </>
     )
 }
 
-const View = ({char}) => {
-    const {id, name, description, thumbnail, homepage, wiki, comics } = char;
+const View = ({data}) => {
+    const {name, description, thumbnail} = data;
 
     return(
         <div className="single-comic">
